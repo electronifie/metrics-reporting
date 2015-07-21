@@ -64,76 +64,106 @@ function MetricsClient () {
 }
 
 MetricsClient.prototype.decrementCounter = function (series, value, cb) {
-  bus.publish('metric.recorded', {
+  var time;
+  if (typeof value === 'object') {
+    time = value.time;
+    value.time = undefined;
+  }
+  this.bus.publish('metric.recorded', {
     name: series,
     data: value,
-    datetime: Date.now(),
+    time: time || Date.now(),
     decrement: true
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.incrementCounter = function (series, value, cb) {
-  bus.publish('metric.recorded', {
+  var time;
+  if (typeof value === 'object') {
+    time = value.time;
+    value.time = undefined;
+  }
+  this.bus.publish('metric.recorded', {
     name: series,
     data: value,
-    datetime: Date.now(),
+    time: time || Date.now(),
     increment: true
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.writeGauge = function (series, point, cb) {
-  bus.publish('metric.recorded', {
+  var time;
+  if (typeof point === 'object') {
+    time = point.time;
+    point.time = undefined;
+  }
+  this.bus.publish('metric.recorded', {
     name: series,
     data: point,
-    datetime: Date.now()
+    time: time || Date.now(),
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.writeMultiTimer = function (timer, series, point, cb) {
+  var time;
+  if (typeof point === 'object') {
+    time = point.time;
+    point.time = undefined;
+  }
   timer.finish(series, point);
-  bus.publish('metric.recorded', {
+  this.bus.publish('metric.recorded', {
     name: series,
     data: point,
-    datetime: Date.now()
+    time: time || Date.now(),
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.writeTimer = function (timer, cb) {
   timer.finish();
-  bus.publish('metric.recorded', {
+  this.bus.publish('metric.recorded', {
     name: timer.series,
     data: timer.point,
-    datetime: Date.now()
+    time: time || Date.now(),
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.writePoint = function (series, point, cb) {
-  bus.publish('metric.recorded', {
+  var time;
+  if (typeof point === 'object') {
+    time = point.time;
+    point.time = undefined;
+  }
+  this.bus.publish('metric.recorded', {
     name: series,
     data: point,
-    datetime: Date.now()
+    time: time || Date.now(),
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
 MetricsClient.prototype.writePoints = function (series, point, cb) {
-  bus.publish('metric.recorded', {
+  var time;
+  if (typeof point === 'object') {
+    time = point.time;
+    point.time = undefined;
+  }
+  this.bus.publish('metric.recorded', {
     name: series,
     data: point,
-    datetime: Date.now()
+    time: time || Date.now(),
   }, {
-    correlationId: bus.correlationId()
+    correlationId: this.bus.correlationId()
   });
 };
 
